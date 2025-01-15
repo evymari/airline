@@ -25,9 +25,22 @@ public class CountryService {
         return countryStored;
     }
 
-    public Country update(Long id, Country updatedCountry) {
+    public boolean existsByName(String name) {
+        return repository.existsByName(name);
     }
 
-    public boolean delete(Long id) {
+    public boolean existsByCode(String code) {
+        return repository.existsByCode(code);
     }
+    public Country update(Country country) {
+        return repository.save(country);
+    }
+    public boolean existsByNameIgnoreCase(String name) {
+        return repository.existsByNameIgnoreCase(name);
+    }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
 }

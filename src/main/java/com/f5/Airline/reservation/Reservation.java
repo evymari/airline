@@ -1,9 +1,10 @@
 package com.f5.Airline.reservation;
 
 import com.f5.Airline.flight.Flight;
-import com.f5.Airline.users.User;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.catalina.User;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ public class Reservation {
     private User user;
     private Flight flight;
     private Date reservationData;
-    private String reserveStatus;
+   private String reserveStatus;
 
     public Reservation(Long id, String reserveStatus, Flight flight, User user, Date reservationData) {
         this.id = id;

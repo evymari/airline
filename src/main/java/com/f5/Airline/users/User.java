@@ -1,14 +1,9 @@
 package com.f5.Airline.users;
 
+import com.f5.Airline.profiles.Profile;
 import com.f5.Airline.roles.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import com.f5.Airline.reservation.Reservation;
-import org.springframework.context.annotation.Profile;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Entity

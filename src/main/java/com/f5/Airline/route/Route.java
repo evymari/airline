@@ -1,9 +1,9 @@
 package com.f5.Airline.route;
 
-import com.f5.Airline.airport.Airport;
+
 import lombok.Getter;
 import lombok.Setter;
-
+/*
 @Getter
 @Setter
 public class Route {
@@ -20,7 +20,7 @@ public class Route {
         this.airportDestino = airportDestino;
         this.airportOrigen = airportOrigen;
     }
-}
+}*/
 /*
     // Getters y Setters
     public Long getId() { return id; }

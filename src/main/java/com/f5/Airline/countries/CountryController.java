@@ -1,5 +1,41 @@
 package com.f5.Airline.countries;
 
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("${api-endpoint}/countries")
+public class CountryController {
+
+    private CountryService services;
+
+    public CountryController(CountryService services) {
+        this.services = services;
+    }
+
+    @GetMapping
+    public List<Country> index() {
+        return services.getAll();
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Country> show(@PathVariable("id") Long id) {
+        Country country = services.getById(id);
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(country);
+    }
+
+    @PostMapping
+    public ResponseEntity<Country> create(@RequestBody Country newCountry) {
+        Country country = services.store(newCountry);
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(country);
+    }
+
+}
+
+/*
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -100,4 +136,4 @@ public class CountryController {
 
 }
 
-
+*/

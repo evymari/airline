@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+
 import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -18,13 +20,8 @@ public class User {
     @Column(name = "id_user")
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String username;
-    @Column(nullable = false)
     private String password;
-    @Column(nullable = false, unique = true)
-
-    private String email;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Profile profile;
@@ -36,14 +33,15 @@ public class User {
     public User() {
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
-
-    public User(String username, String password, String email, Profile profile) {
+    public User(String username, String password, Profile profile) {
         this.username = username;
         this.password = password;
         this.profile = profile;
-        this.email = email;
-
     }
 
     public Long getId() {
@@ -60,14 +58,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
@@ -93,15 +83,4 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-    // Método para añadir roles
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
-
-    // Método para eliminar roles
-    public void removeRole(Role role) {
-        this.roles.remove(role);
-    }
-
-
 }

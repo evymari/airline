@@ -1,13 +1,15 @@
 package com.f5.Airline.users;
 
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+/*
 @RestController
-@RequestMapping("${api-endpoint}/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -16,65 +18,51 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Obtener todos los users
-@GetMapping
-    public List<User> index() {
-        return userService.getAll();
+    @GetMapping
+    public ResponseEntity<List<User>> index(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(userService.getAllPaginated(page, size));
     }
 
-    // Obtener un país por ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> show(@PathVariable("id") Long id) {
-       User user = userService.getById(id);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<User> show(@PathVariable Long id) {
+        return userService.getById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
-    //crear nuevo usuario
-@PostMapping
-    public ResponseEntity<?>createUser(@RequestBody User newUser) {
-        boolean existsByEmail = userService.existsByEmail(newUser.getEmail());
-        if (existsByEmail) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body("Email already exists");
+
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody UserDto newUser) {
+        if (userService.existsByEmail(newUser.email())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El email ya existe");
         }
         User user = userService.store(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
-}
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody User updatedUser) {
-        // Buscar el país existente por ID
-        User existingUser = userService.getById(id);
-
-        // Si el usuario no existe, devolver un 404 Not Found
-        if (existingUser == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con ID " + id + " no existe.");
-        }
-
-        // Actualizar los campos del usuario (excepto el ID)
-        existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setEmail(updatedUser.getEmail());
-        // Puedes agregar más campos si es necesario
-
-        // Guardar los cambios
-        User savedUser = userService.update(existingUser);
-
-        // Devolver el país actualizado con un 200 OK
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto updatedUser) {
+        return userService.update(id, updatedUser)
+                .<ResponseEntity<?>>map(user -> ResponseEntity.ok(user)) // Aseguramos que el tipo sea ResponseEntity<?>
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario no existe"));
     }
+
+
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
-        User user = userService.getById(id);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con ID " + id + " no existe.");
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        if (!userService.delete(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario no existe");
         }
-        userService.delete(id);
-        return ResponseEntity.noContent().build(); // 204 - Sin contenido
+        return ResponseEntity.noContent().build();
     }
-
-
-
 }
+*/
+    // Registro de usuario
+   /* @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User newUser = userService.registerUser(user);
+        return ResponseEntity.ok(newUser);
+    }*/
+
+

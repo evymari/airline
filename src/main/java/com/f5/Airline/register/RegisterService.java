@@ -33,7 +33,7 @@ public class RegisterService {
 
         String passwordEncoded = encryptFacade.encode("bcrypt", passwordDecoded);
 
-        User newUser = new User(userData.username(), passwordEncoded);
+        User newUser = new User(userData.email(), passwordEncoded);
         newUser.setRoles(roleService.assignDefaultRole());
 
         userRepository.save(newUser);

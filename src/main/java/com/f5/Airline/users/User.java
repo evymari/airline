@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-
 import java.util.Set;
 
 @Getter
@@ -20,7 +19,7 @@ public class User {
     @Column(name = "id_user")
     private Long id;
 
-    private String username;
+    private String email; // Cambiado de 'username' a 'email'
     private String password;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -33,13 +32,13 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String email, String password) { // Actualizado de 'username' a 'email'
+        this.email = email;
         this.password = password;
     }
 
-    public User(String username, String password, Profile profile) {
-        this.username = username;
+    public User(String email, String password, Profile profile) { // Actualizado de 'username' a 'email'
+        this.email = email;
         this.password = password;
         this.profile = profile;
     }
@@ -52,12 +51,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() { // Actualizado el getter
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) { // Actualizado el setter
+        this.email = email;
     }
 
     public String getPassword() {

@@ -10,15 +10,16 @@ import java.util.Collection;
 
 public class SecurityUser implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public SecurityUser(User user) {
         this.user = user;
     }
 
+    // Cambiar getEmail() por getUsername()
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getEmail();  // Usa email como identificador de usuario
     }
 
     @Override
@@ -28,38 +29,31 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : user.getRoles()) {
-            System.out.println("User role : " + role.getName());
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
-            authorities.add(authority);
+            System.out.println("User role: " + role.getName());
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-
         return authorities;
-
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return true; // Cambiar según lógica de negocio si es necesario
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return true; // Cambiar según lógica de negocio si es necesario
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return true; // Cambiar según lógica de negocio si es necesario
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; // Cambiar según lógica de negocio si es necesario
     }
-
 }
-

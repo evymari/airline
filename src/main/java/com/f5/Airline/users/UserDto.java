@@ -1,7 +1,8 @@
 package com.f5.Airline.users;
 
-import java.util.Optional;
+import com.f5.Airline.profiles.Profile;
+
 public record UserDto(String email, String password) {
 
-}
 
+}

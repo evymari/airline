@@ -1,6 +1,6 @@
 package com.f5.Airline.users;
 /*
-import org.springframework.data.domain.PageRequest;
+import com.f5.Airline.profiles.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -17,119 +18,64 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getAllPaginated(int page, int size) {
-        return userRepository.findAll(PageRequest.of(page, size)).getContent();
+    // Obtener todos los usuarios
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public Optional<User> getById(Long id) {
+    // Obtener un usuario por ID
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
+    // Verificar si existe un usuario con el email proporcionado
     public boolean existsByEmail(String email) {
-        return userRepository.findByEmail(email).isPresent();
+        return userRepository.existsByEmail(email);
     }
 
-    public User store(UserDto userDto) {
-        User user = new User(userDto.username(), passwordEncoder.encode(userDto.password()), userDto.email());
+    // Crear un usuario nuevo con validaciones
+    public User createUser(UserDto userDto) {
+        if (existsByEmail(userDto.getEmail())) {
+            throw new IllegalArgumentException("El email ya está registrado");
+        }
+
+        User user = new User();
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        // Configurar el perfil si está disponible
+        if (userDto.getProfile() != null) {
+            Profile profile = userDto.getProfile();
+            profile.setUser(user);
+            user.setProfile(profile);
+        }
+
         return userRepository.save(user);
     }
 
-    public Optional<User> update(Long id, UserDto userDto) {
+    // Actualizar datos de un usuario existente
+    public Optional<User> updateUser(Long id, UserDto userDto) {
         return userRepository.findById(id).map(user -> {
-            user.setUsername(userDto.username());
-            user.setEmail(userDto.email());
-            user.setPassword(passwordEncoder.encode(userDto.password()));
+            if (!user.getEmail().equals(userDto.getEmail()) && existsByEmail(userDto.getEmail())) {
+                throw new IllegalArgumentException("El email ya está registrado por otro usuario");
+            }
+
+            user.setEmail(userDto.getEmail());
+            if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            }
+
             return userRepository.save(user);
         });
     }
 
-    public boolean delete(Long id) {
+    // Eliminar un usuario por ID
+    public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
             return true;
         }
         return false;
     }
-}*/
-/*
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-
-@Service
-public class UserService {
-    private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public List<User> getAll() {
-        return userRepository.findAll();
-    }
-
-    public User getById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    public boolean existsByEmail(String email) {
-        return userRepository.findByEmail(email).isPresent();
-    }
-
-    public User store(User user) {
-        return userRepository.save(user);
-    }
-
-    public User update(User user) {
-        return userRepository.save(user);
-    }
-
-    public void delete(Long id) {
-        userRepository.deleteById(id);
-    }
-}*/
-/*
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-@Service
-public class UserService {
-    private final UserRepository repository;
-
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }
-
-    public List<User> getAll() {
-        return repository.findAll();
-    }
-
-    public User getById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    public User store(User newUser) {
-        return repository.save(newUser);
-    }
-
-    public boolean existsByEmail(String email) {
-        return repository.existsByEmail(email);
-    }
-
-    public boolean existsByUsername(String username) {
-        return repository.existsByUsername(username);
-    }
-
-    public User update(User user) {
-        return repository.save(user);
-    }
-
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
-
-}*/
-
+}
+*/

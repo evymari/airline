@@ -1,11 +1,13 @@
 package com.f5.Airline.profiles;
 
-
 import com.f5.Airline.countries.Country;
 import com.f5.Airline.users.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 @Entity
 @Table(name = "profiles")
 public class Profile {
@@ -15,11 +17,18 @@ public class Profile {
     @Column(name = "id_profile")
     private Long id;
 
+    @NotBlank(message = "El email no puede estar vacío")
+    @Email(message = "Debe ser un email válido")
+    @Column(nullable = false, unique = true) // Garantiza unicidad en la base de datos
     private String email;
+
+    @NotBlank(message = "La dirección no puede estar vacía")
+    @Size(min = 5, max = 255, message = "La dirección debe tener entre 5 y 255 caracteres")
     private String address;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id_user")
+    @JoinColumn(name = "user_id", referencedColumnName = "id_user", nullable = false)
+    @NotNull(message = "El usuario asociado no puede ser nulo")
     private User user;
 
     @ManyToOne
@@ -68,4 +77,11 @@ public class Profile {
         this.country = country;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

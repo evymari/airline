@@ -15,5 +15,4 @@ public @interface ValidPassword {
     String message() default "La contraseña debe tener al menos 6 caracteres, incluyendo una mayúscula, una minúscula y un número";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-}
-*/
+}*/

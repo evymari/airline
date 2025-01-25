@@ -1,6 +1,6 @@
 package com.f5.Airline.profiles;
 
-import com.f5.Airline.profiles.exceptions.ProfileNotFoundException;
+import com.f5.Airline.exceptions.ProfileNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +37,12 @@ public class ProfileController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Profile> updateProfile(@PathVariable Long id, @Valid @RequestBody Profile profile) {
-        Profile updatedProfile = profileService.updateProfile(id, profile)
+    public ResponseEntity<Profile> updateProfile(@PathVariable Long id, @Valid @RequestBody ProfileUpdateDTO profileUpdateDTO) {
+        Profile updatedProfile = profileService.updateProfile(id, profileUpdateDTO)
                 .orElseThrow(() -> new ProfileNotFoundException("Perfil no encontrado con id: " + id));
         return ResponseEntity.ok(updatedProfile);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProfile(@PathVariable Long id) {

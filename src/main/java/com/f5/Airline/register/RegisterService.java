@@ -24,6 +24,7 @@ public class RegisterService {
     private final RoleService roleService;
     private final IEncryptFacade encryptFacade;
 
+
     public RegisterService(ProfileRepository profileRepository, UserRepository userRepository, RoleService roleService, IEncryptFacade encryptFacade) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
@@ -41,20 +42,27 @@ public class RegisterService {
         if (!StringUtils.hasText(userData.password()) || userData.password().length() < 8) {
             throw new ValidationException("The password must be at least 8 characters.");
         }
+        // Verificar si el nombre de usuario ya está en uso
+        if (userRepository.existsByUsername(userData.username())) {
+            throw new ValidationException("The username is already in use.");
+        }
         String passwordDecoded = encryptFacade.decode("base64", userData.password());
 
         System.out.println("<------------ " + passwordDecoded);
 
         String passwordEncoded = encryptFacade.encode("bcrypt", passwordDecoded);
 
-        User newUser = new User(userData.email(), passwordEncoded);
+        User newUser = new User(userData.username(),userData.email(), passwordEncoded);
         newUser.setRoles(roleService.assignDefaultRole());
 
         // Crear perfil asociado
         Profile profile = new Profile();
         profile.setEmail(userData.email());
-        profile.setAddress("Default address"); // Se puede personalizar
+
+        profile.setAddress("Default address"); // Personalizable
+        profile.setPhotoUrl(userData.photoUrl());         profile.setAddress("Default address"); // Se puede personalizar
         profile.setUser(newUser);
+
         // Establecer perfil en el usuario
         newUser.setProfile(profile);
         userRepository.save(newUser);

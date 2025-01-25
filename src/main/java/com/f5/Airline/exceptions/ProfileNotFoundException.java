@@ -1,4 +1,4 @@
-package com.f5.Airline.profiles.exceptions;
+package com.f5.Airline.exceptions;
 
 
 public class ProfileNotFoundException extends RuntimeException {

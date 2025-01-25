@@ -1,8 +1,9 @@
 package com.f5.Airline.validation;
 
-/*
+
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,4 +18,4 @@ public @interface ValidEmail {
     String message() default "El correo debe tener un formato válido";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-}*/
+}

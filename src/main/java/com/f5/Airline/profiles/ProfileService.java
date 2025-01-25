@@ -1,6 +1,6 @@
 package com.f5.Airline.profiles;
 
-import com.f5.Airline.profiles.exceptions.ProfileNotFoundException;
+import com.f5.Airline.exceptions.ProfileNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -25,12 +25,17 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
-    public Optional<Profile> updateProfile(Long id, Profile profileDetails) {
+    public Optional<Profile> updateProfile(Long id, ProfileUpdateDTO profileUpdateDTO) {
         return profileRepository.findById(id).map(existingProfile -> {
-            existingProfile.setEmail(profileDetails.getEmail());
-            existingProfile.setAddress(profileDetails.getAddress());
-            existingProfile.setUser(profileDetails.getUser());
-            existingProfile.setCountry(profileDetails.getCountry());
+            if (profileUpdateDTO.getAddress() != null) {
+                existingProfile.setAddress(profileUpdateDTO.getAddress());
+            }
+            if (profileUpdateDTO.getCountry() != null) {
+                existingProfile.setCountry(profileUpdateDTO.getCountry());
+            }
+            if (profileUpdateDTO.getPhotoUrl() != null) {
+                existingProfile.setPhotoUrl(profileUpdateDTO.getPhotoUrl());
+            }
             return profileRepository.save(existingProfile);
         });
     }

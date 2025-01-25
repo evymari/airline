@@ -20,3 +20,9 @@ INSERT INTO profiles (id_profile,email, address, user_id, country_id) VALUES (de
 /* Roles Users */
 INSERT INTO roles_users (role_id, user_id) VALUES (1, 1);
 INSERT INTO roles_users (role_id, user_id) VALUES (2, 2);
+/* Inserting Airports */
+INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuerto Internacional de Los Ángeles', 'Los Ángeles', 'LAX');
+INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuerto Charles de Gaulle', 'París', 'CDG');
+INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuerto Internacional de Boryspil', 'Kiev', 'KBP');
+INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuerto Internacional de Roma-Fiumicino', 'Roma', 'FCO');
+INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuerto Internacional de Toronto Pearson', 'Toronto', 'YYZ');

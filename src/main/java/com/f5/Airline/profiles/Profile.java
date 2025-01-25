@@ -34,15 +34,21 @@ public class Profile {
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = true)
     private Country country;
+    @Column(name = "photo_url")
+    private String photoUrl;
 
     public Profile() {
+        // Establecer foto predeterminada
+        this.photoUrl = "https://example.com/default-profile-picture.jpg";
     }
 
-    public Profile(String email, String address, User user, Country country) {
+    public Profile(String email, String address, User user, Country country, String photoUrl) {
         this.email = email;
         this.address = address;
         this.user = user;
         this.country = country;
+        this.photoUrl = (photoUrl != null && !photoUrl.isEmpty()) ? photoUrl : "https://example.com/default-profile-picture.jpg";
+
     }
 
     public Long getId() {
@@ -83,5 +89,12 @@ public class Profile {
 
     public void setUser(User user) {
         this.user = user;
+    }
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+    public void setPhotoUrl(String photoUrl) {
+        // Si no se proporciona una foto personalizada, se usa la predeterminada
+        this.photoUrl = (photoUrl != null && !photoUrl.isEmpty()) ? photoUrl : "https://example.com/default-profile-picture.jpg";
     }
 }

@@ -21,13 +21,19 @@ public class RoleService {
     }
 
     public Set<Role> assignDefaultRole() {
-        Role defaultRole = this.getById(1L);
-
+        Role defaultRole = this.getByName("ROLE_USER");
         Set<Role> roles = new HashSet<>();
         roles.add(defaultRole);
-
         return roles;
     }
+
+    public Role getByName(String name) throws RoleNotFoundException {
+        return repository.findAll().stream()
+                .filter(role -> role.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new RoleNotFoundException("Role not found: " + name));
+    }
+
 
 }
 

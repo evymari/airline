@@ -1,41 +1,33 @@
 package com.f5.Airline.flight;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+@Entity
+@Table(name = "flights") // Asegura que el nombre de la tabla coincida con el SQL
 
-@Getter
-@Setter
 public class Flight {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String origIN;
+
+    @Column(nullable = false)
+    private String origin;
+
+    @Column(nullable = false)
     private String destination;
-    private Date dateFlight;
-    private String state;
-    private int spaceAvailable;
 
+    @Column(nullable = false)
+    private LocalDateTime departureDate;
 
+    @Column(nullable = false)
+    private int availableSeats;
 
-    public Flight(Long id, String origIN, String destination, Date dateFlight, String state, int spaceAvailable) {
-        this.id = id;
-        this.origIN = origIN;
-        this.destination = destination;
-        this.dateFlight = dateFlight;
-        this.state = state;
-        this.spaceAvailable = spaceAvailable;
-    }
-    // Métodos
-    public void cambiarEstado() {
-        System.out.println("Cambiando estado del vuelo...");
-    }
+    @Column(nullable = false)
+    private boolean status;
 
-    public List<Flight> buscarVuelo() {
-        return new ArrayList<>(); // Retorna una lista de vuelos
-    }
-
+    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -44,12 +36,12 @@ public class Flight {
         this.id = id;
     }
 
-    public String getOrigIN() {
-        return origIN;
+    public String getOrigin() {
+        return origin;
     }
 
-    public void setOrigIN(String origIN) {
-        this.origIN = origIN;
+    public void setOrigin(String origin) {
+        this.origin = origin;
     }
 
     public String getDestination() {
@@ -60,27 +52,27 @@ public class Flight {
         this.destination = destination;
     }
 
-    public Date getDateFlight() {
-        return dateFlight;
+    public LocalDateTime getDepartureDate() {
+        return departureDate;
     }
 
-    public void setDateFlight(Date dateFlight) {
-        this.dateFlight = dateFlight;
+    public void setDepartureDate(LocalDateTime departureDate) {
+        this.departureDate = departureDate;
     }
 
-    public String getState() {
-        return state;
+    public int getAvailableSeats() {
+        return availableSeats;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setAvailableSeats(int availableSeats) {
+        this.availableSeats = availableSeats;
     }
 
-    public int getSpaceAvailable() {
-        return spaceAvailable;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setSpaceAvailable(int spaceAvailable) {
-        this.spaceAvailable = spaceAvailable;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

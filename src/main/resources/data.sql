@@ -26,3 +26,11 @@ INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuert
 INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuerto Internacional de Boryspil', 'Kiev', 'KBP');
 INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuerto Internacional de Roma-Fiumicino', 'Roma', 'FCO');
 INSERT INTO airport (id_airport, name, city, codigo) VALUES (default, 'Aeropuerto Internacional de Toronto Pearson', 'Toronto', 'YYZ');
+
+/* Insertar vuelos de prueba */
+
+INSERT INTO flights (origin, destination, departure_date, available_seats, status)
+VALUES ('Madrid', 'Barcelona', '2025-02-01T10:00:00', 100, true),
+       ('Londres', 'París', '2025-02-02T15:00:00', 150, true),
+       ('Nueva York', 'Los Ángeles', '2025-02-05T12:00:00', 200, true);
+

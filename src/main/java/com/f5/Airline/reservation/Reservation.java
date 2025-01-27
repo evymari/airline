@@ -1,50 +1,101 @@
 package com.f5.Airline.reservation;
 
 import com.f5.Airline.flight.Flight;
-
+import com.f5.Airline.users.User;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.catalina.User;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Entity
 public class Reservation {
-    private Long id;
-    private User user;
-    private Flight flight;
-    private Date reservationData;
-   private String reserveStatus;
 
-    public Reservation(Long id, String reserveStatus, Flight flight, User user, Date reservationData) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private Flight flight;
+
+    @ManyToOne
+    private User user;
+
+    private int seatsReserved;
+    private LocalDateTime reservationTime;
+    private String reserveStatus; // "Pendiente", "Cancelada", etc.
+    private boolean confirmed;
+
+    public Reservation() {
+    }
+
+    public Reservation(Long id, Flight flight, User user, int seatsReserved, LocalDateTime reservationTime, String reserveStatus, boolean confirmed) {
         this.id = id;
-        this.reserveStatus = reserveStatus;
         this.flight = flight;
         this.user = user;
-        this.reservationData = reservationData;
+        this.seatsReserved = seatsReserved;
+        this.reservationTime = reservationTime;
+        this.reserveStatus = reserveStatus;
+        this.confirmed = confirmed;
     }
-}
-// Getters y Setters
-/*public Long getId() { return id; }
-public void setId(Long id) { this.id = id; }
-public Usuario getUsuario() { return usuario; }
-public void setUsuario(Usuario usuario) { this.usuario = usuario; }
-public Vuelo getVuelo() { return vuelo; }
-public void setVuelo(Vuelo vuelo) { this.vuelo = vuelo; }
-public Date getFechaReserva() { return fechaReserva; }
-public void setFechaReserva(Date fechaReserva) { this.fechaReserva = fechaReserva; }
-public String getEstadoReserva() { return estadoReserva; }
-public void setEstadoReserva(String estadoReserva) { this.estadoReserva = estadoReserva; }
 
-// Métodos
-public boolean realizarReserva() {
-    System.out.println("Reserva realizada.");
-    return true;
-}
+    public Long getId() {
+        return id;
+    }
 
-public boolean verificarDisponibilidad() {
-    System.out.println("Verificando disponibilidad...");
-    return true;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getSeatsReserved() {
+        return seatsReserved;
+    }
+
+    public void setSeatsReserved(int seatsReserved) {
+        this.seatsReserved = seatsReserved;
+    }
+
+    public LocalDateTime getReservationTime() {
+        return reservationTime;
+    }
+
+    public void setReservationTime(LocalDateTime reservationTime) {
+        this.reservationTime = reservationTime;
+    }
+
+    public String getReserveStatus() {
+        return reserveStatus;
+    }
+
+    public void setReserveStatus(String reserveStatus) {
+        this.reserveStatus = reserveStatus;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+    // Getters y Setters
+    // ...
 }
-}*/

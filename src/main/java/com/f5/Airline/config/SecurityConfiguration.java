@@ -51,12 +51,7 @@ public class SecurityConfiguration {
                         .requestMatchers(endpoint).permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
                         .requestMatchers(endpoint + "/login").hasAnyRole("USER", "ADMIN") // principio de mínimos
-                        .requestMatchers(endpoint + "/admin/**").hasRole("ADMIN") // Protege rutas de admin
-
-                        .requestMatchers(HttpMethod.POST, endpoint + "/airports/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, endpoint + "/flights/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, endpoint + "/reservations").hasRole("ADMIN")
-
+                        //.requestMatchers(endpoint + "/admin/**").hasRole("ADMIN") // Protege rutas de admin
 
                         .requestMatchers(endpoint + "/public").permitAll()
                         .requestMatchers(endpoint + "/private").hasRole("ADMIN")

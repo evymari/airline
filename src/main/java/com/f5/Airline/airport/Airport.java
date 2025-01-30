@@ -1,32 +1,70 @@
 package com.f5.Airline.airport;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "airport")
 public class Airport {
-    public Airport(Long id, String codigo, String city, String name) {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_airport")
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String name;
+
+    @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false, unique = true)
+    private String codigo;
+
+    // Default constructor
+    public Airport() {}
+
+    // Constructor with parameters
+    public Airport(Long id, String name, String city, String codigo) {
         this.id = id;
-        this.codigo = codigo;
+        this.name = name;
         this.city = city;
+        this.codigo = codigo;
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    private Long id;
-    private String name;
-    private String city;
+    public String getCity() {
+        return city;
+    }
 
-    private String codigo;
-}
-/* // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public String getCiudad() { return ciudad; }
-    public void setCiudad(String ciudad) { this.ciudad = ciudad; }
-    public String getPais() { return pais; }
-    public void setPais(String pais) { this.pais = pais; }
-    public String getCodigo() { return codigo; }
-    public void setCodigo(String codigo) { this.codigo = codigo; }
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-    // Métodos
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    // Additional methods (optional)
     public void crearAeropuerto() {
         System.out.println("Aeropuerto creado.");
     }
@@ -34,4 +72,4 @@ public class Airport {
     public void actualizarAeropuerto() {
         System.out.println("Aeropuerto actualizado.");
     }
-}*/
+}

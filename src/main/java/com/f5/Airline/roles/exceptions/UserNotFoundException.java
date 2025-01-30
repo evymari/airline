@@ -1,4 +1,4 @@
-package com.f5.Airline.excceptions;
+package com.f5.Airline.roles.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

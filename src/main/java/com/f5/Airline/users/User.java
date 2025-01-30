@@ -2,11 +2,13 @@ package com.f5.Airline.users;
 
 import com.f5.Airline.profiles.Profile;
 import com.f5.Airline.roles.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -18,15 +20,13 @@ public class User {
     @Column(name = "id_user")
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String username;
-    @Column(nullable = false)
+    private String photoUrl;
+    private String email; // Cambiado de 'username' a 'email'
     private String password;
-    @Column(nullable = false, unique = true)
-
-    private String email;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private Profile profile;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -36,22 +36,19 @@ public class User {
     public User() {
     }
 
-
-
-    public User(String username, String password, String email, Profile profile) {
+    public User(String username, String email, String password) { // Actualizado de 'username' a 'email'
         this.username = username;
+        this.email = email;
+        this.password = password;
+
+    }
+
+    public User(String username,String email, String password, Profile profile, String photoUrl) { // Actualizado de 'username' a 'email'
+        this.username = username;
+        this.email = email;
         this.password = password;
         this.profile = profile;
-        this.email = email;
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.photoUrl = photoUrl;
     }
 
     public String getUsername() {
@@ -68,6 +65,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getPassword() {
@@ -93,15 +98,44 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-    // Método para añadir roles
-    public void addRole(Role role) {
-        this.roles.add(role);
+    /*
+    public Long getId() {
+        return id;
     }
 
-    // Método para eliminar roles
-    public void removeRole(Role role) {
-        this.roles.remove(role);
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    public String getEmail() { // Actualizado el getter
+        return email;
+    }
 
+    public void setEmail(String email) { // Actualizado el setter
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }*/
 }

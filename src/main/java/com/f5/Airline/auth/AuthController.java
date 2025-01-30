@@ -23,6 +23,9 @@ public class AuthController {
         SecurityContext contextHolder = SecurityContextHolder.getContext();
         Authentication auth = contextHolder.getAuthentication();
 
+        System.out.println("Usuario autenticado: " + auth.getName()); // 🔍 Debugging
+        System.out.println("Roles: " + auth.getAuthorities());
+
         Map<String,String> json = new HashMap<>();
         json.put("message", "Logged");
         json.put("username", auth.getName());

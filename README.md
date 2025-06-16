@@ -13,6 +13,7 @@
 8. [Contribución](#contribución)
 9. [Gestión del Proyecto](#gestión-del-proyecto)
 
+
 ## 💡 **Descripción del Proyecto**
 Este proyecto es una API REST desarrollada en **Java Spring Boot** para gestionar vuelos, aeropuertos, clientes y reservas. Permite a los usuarios buscar vuelos, hacer reservas y a los administradores gestionar aeropuertos y trayectos.
 
@@ -31,8 +32,21 @@ Este proyecto es una API REST desarrollada en **Java Spring Boot** para gestiona
 
 ## 📂 **Estructura del Proyecto**
 ```  
-📦 vuelos-api├── 📂 src│   ├── 📂 main│   │   ├── 📂 java│   │   │   ├── 📂 com.example.vuelos│   │   │   │   ├── 📂 controllers│   │   │   │   ├── 📂 services│   │   │   │   ├── 📂 repositories│   │   │   │   ├── 📂 models│   │   │   │   ├── 📂 security│   ├── 📂 test│  
-├── 📄 pom.xml├── 📄 application.properties```  
+📦 vuelos-api
+├── 📂 src│   
+├── 📂 main│   
+│├── 📂 java│  
+       ├── 📂 com.example.vuelos│  
+                ├── 📂 controllers│
+                ├── 📂 services│
+                ├── 📂 repositories│
+                ├── 📂 models│ 
+                ├── 📂 security│   
+                ├── 📂 test│  
+├── 📄 pom.xml
+├── 📄 application.properties
+```  
+
   
 ## 📦 **Endpoints de la API**  
   
@@ -46,19 +60,25 @@ Este proyecto es una API REST desarrollada en **Java Spring Boot** para gestiona
   
   
 ### ✍️ **Ejemplo de solicitud para reservar un vuelo:**  
-    ```json!    POST /api/reservations    {        "userId": 1,        "flightId": 10,        "passengers": 2    }    ```  
+
+```
+json!    POST /api/reservations    {        "userId": 1,        "flightId": 10,        "passengers": 2    }  
+```  
 ## 🛠️ **Tecnologías Utilizadas**  
 - ☕ **Java Spring Boot**: Framework principal para la API.  
 - 🗄️ **PostgreSQL**: Base de datos utilizada.  
 - 🔐 **JWT**: Para la autenticación segura de usuarios.  
 - 📡 **Postman**: Para probar los endpoints.  
-- 🛠 **Maven**: Para la gestión de dependencias.  
+- 🛠 **Maven**: Para la gestión de dependencias. 
+ 
   
 ## 📝 **Ejecutar el Proyecto**  
 1. Clonar el repositorio:  
     ```bash  
     git clone https://github.com/TuUsuario/VuelosAPI.git  
-    ```2. Configurar variables de entorno en `application.properties`.  
+    ``` 
+  Configurar variables de entorno en `application.properties`.  
+
 2. Construir el proyecto con Maven:  
     ```bash  
     mvn clean install  
@@ -69,7 +89,8 @@ Este proyecto es una API REST desarrollada en **Java Spring Boot** para gestiona
 ## 🧪 **Ejecutar Tests**  
 Para ejecutar los tests, usa:  
 ```bash  
-mvn test```  
+mvn test 
+```  
   
 ## 📢 **Contribución**  
 Las contribuciones son bienvenidas. Para colaborar, por favor abre un issue o un pull request en el repositorio.  

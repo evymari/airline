@@ -1,4 +1,5 @@
-[CI](https://github.com/evymari/airline/actions/workflows/ci.yml/badge.svg)
+![CI - Spring Boot](https://github.com/evymari/airline/actions/workflows/ci.yml/badge.svg)
+
 
 # ✈️ **Proyecto Sistema de Gestión de Vuelos API REST**
 

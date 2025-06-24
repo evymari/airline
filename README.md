@@ -1,4 +1,4 @@
-[CI](https://github.com/TuUsuario/VuelosAPI/actions/workflows/ci.yml/badge.svg)
+[CI](https://github.com/evymari/airline/actions/workflows/ci.yml/badge.svg)
 
 # ✈️ **Proyecto Sistema de Gestión de Vuelos API REST**
 

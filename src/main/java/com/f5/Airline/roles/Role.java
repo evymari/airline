@@ -9,10 +9,10 @@ import lombok.Setter;
 
 import java.util.Set;
 
-
+@Data
 @Getter
 @Setter
-@Data
+
 @Entity
 @Table(name = "roles")
 public class Role {

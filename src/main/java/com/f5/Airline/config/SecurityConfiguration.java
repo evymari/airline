@@ -50,8 +50,9 @@ public class SecurityConfiguration {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(endpoint).permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
+                        //.requestMatchers(HttpMethod.POST, endpoint + "/login").permitAll()
                         .requestMatchers(endpoint + "/login").hasAnyRole("USER", "ADMIN") // principio de mínimos
-                        //.requestMatchers(endpoint + "/admin/**").hasRole("ADMIN") // Protege rutas de admin
+                        .requestMatchers(endpoint + "/admin/**").hasRole("ADMIN") // Protege rutas de admin
 
                         .requestMatchers(endpoint + "/public").permitAll()
                         .requestMatchers(endpoint + "/private").hasRole("ADMIN")

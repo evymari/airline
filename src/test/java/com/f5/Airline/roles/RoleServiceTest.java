@@ -1,6 +1,6 @@
 package com.f5.Airline.roles;
 
-import com.f5.Airline.roles.exceptions.RoleNotFoundException;
+import com.f5.Airline.exceptions.RoleNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

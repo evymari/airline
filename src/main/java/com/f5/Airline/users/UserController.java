@@ -2,12 +2,14 @@ package com.f5.Airline.users;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-/*
+
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/admin/users")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
 
     private final UserService userService;
@@ -16,49 +18,28 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Obtener todos los usuarios
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    @PostMapping("/create")
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserDto userDto, @RequestParam String role) {
+        UserResponseDto newUser = userService.createUserByAdmin(userDto, role);
+        return ResponseEntity.ok(newUser);
     }
 
-    // Obtener un usuario por ID
+    @GetMapping
+    public List<UserResponseDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear un nuevo usuario
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
-        try {
-            User newUser = userService.createUser(userDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-    }
-
-    // Actualizar un usuario existente
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        try {
-            return userService.updateUser(id, userDto)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-    }
-
-    // Eliminar un usuario
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (userService.deleteUser(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return userService.deleteUser(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
-}*/
+}

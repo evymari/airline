@@ -1,16 +1,11 @@
 package com.f5.Airline.users;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    public Optional<User> findByEmail(String email); // Cambiado de 'findByUsername' a 'findByEmail'
-
+    Optional<User> findByEmail(String email);
     boolean existsByEmail(String email);
-
     boolean existsByUsername(String username);
 }
-

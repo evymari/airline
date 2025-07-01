@@ -1,8 +1,8 @@
 package com.f5.Airline.validation;
-/*
-import com.nimbusds.jose.Payload;
-import jakarta.validation.Constraint;
 
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,4 +15,4 @@ public @interface ValidPassword {
     String message() default "La contraseña debe tener al menos 6 caracteres, incluyendo una mayúscula, una minúscula y un número";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-}*/
+}

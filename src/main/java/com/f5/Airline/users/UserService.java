@@ -1,75 +1,77 @@
 package com.f5.Airline.users;
-/*
-import com.f5.Airline.profiles.Profile;
+
+import com.f5.Airline.roles.Role;
+import com.f5.Airline.roles.RoleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Obtener todos los usuarios
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+    // Registro público (rol USER)
+    public User registerPublicUser(UserDto userDto) {
+        validateUser(userDto);
 
-    // Obtener un usuario por ID
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
+        User user = new User(userDto.username(), userDto.email(), passwordEncoder.encode(userDto.password()));
+        user.setPhotoUrl(userDto.photoUrl());
 
-    // Verificar si existe un usuario con el email proporcionado
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Rol USER no encontrado"));
 
-    // Crear un usuario nuevo con validaciones
-    public User createUser(UserDto userDto) {
-        if (existsByEmail(userDto.getEmail())) {
-            throw new IllegalArgumentException("El email ya está registrado");
-        }
-
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        // Configurar el perfil si está disponible
-        if (userDto.getProfile() != null) {
-            Profile profile = userDto.getProfile();
-            profile.setUser(user);
-            user.setProfile(profile);
-        }
-
+        user.setRoles(Set.of(userRole));
         return userRepository.save(user);
     }
 
-    // Actualizar datos de un usuario existente
-    public Optional<User> updateUser(Long id, UserDto userDto) {
-        return userRepository.findById(id).map(user -> {
-            if (!user.getEmail().equals(userDto.getEmail()) && existsByEmail(userDto.getEmail())) {
-                throw new IllegalArgumentException("El email ya está registrado por otro usuario");
-            }
+    // Crear usuario como admin con rol asignado
+    public UserResponseDto createUserByAdmin(UserDto userDto, String roleName) {
+        validateUser(userDto);
 
-            user.setEmail(userDto.getEmail());
-            if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-                user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            }
+        Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + roleName));
 
-            return userRepository.save(user);
-        });
+        User user = new User(userDto.username(), userDto.email(), passwordEncoder.encode(userDto.password()));
+        user.setPhotoUrl(userDto.photoUrl());
+        user.setRoles(Set.of(role));
+        return mapToResponseDto(userRepository.save(user));
     }
 
-    // Eliminar un usuario por ID
+    private UserResponseDto mapToResponseDto(User user) {
+        return new UserResponseDto(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPhotoUrl()
+        );
+    }
+
+
+    public List<UserResponseDto> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
+
+    public Optional<UserResponseDto> getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(this::mapToResponseDto);
+    }
+
+
     public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
@@ -77,5 +79,13 @@ public class UserService {
         }
         return false;
     }
+
+    private void validateUser(UserDto dto) {
+        if (userRepository.existsByEmail(dto.email())) {
+            throw new IllegalArgumentException("Email ya registrado");
+        }
+        if (userRepository.existsByUsername(dto.username())) {
+            throw new IllegalArgumentException("Username ya registrado");
+        }
+    }
 }
-*/

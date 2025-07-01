@@ -46,7 +46,7 @@ public class TokenService {
         return this.jwtEncoder.encode(encoderParameters).getTokenValue();
     }
 
-}*/
+}
 
 
 /*

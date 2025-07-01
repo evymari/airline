@@ -4,13 +4,16 @@ import com.f5.Airline.profiles.Profile;
 import com.f5.Airline.roles.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,7 +25,7 @@ public class User {
 
     private String username;
     private String photoUrl;
-    private String email; // Cambiado de 'username' a 'email'
+    private String email;
     private String password;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -30,25 +33,20 @@ public class User {
     private Profile profile;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "roles_users", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    Set<Role> roles;
+    @JoinTable(
+            name = "roles_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
-    public User() {
-    }
 
-    public User(String username, String email, String password) { // Actualizado de 'username' a 'email'
+
+    // Constructor para registro o creación
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-
-    }
-
-    public User(String username,String email, String password, Profile profile, String photoUrl) { // Actualizado de 'username' a 'email'
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.profile = profile;
-        this.photoUrl = photoUrl;
     }
 
     public String getUsername() {
@@ -59,12 +57,12 @@ public class User {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public Long getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPhotoUrl() {
@@ -75,43 +73,11 @@ public class User {
         this.photoUrl = photoUrl;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-    /*
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() { // Actualizado el getter
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) { // Actualizado el setter
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -137,5 +103,14 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }*/
+    }
+
+    // Constructor extendido (por si lo usas con perfil y foto)
+    public User(String username, String email, String password, Profile profile, String photoUrl) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.profile = profile;
+        this.photoUrl = photoUrl;
+    }
 }

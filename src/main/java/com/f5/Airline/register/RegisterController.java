@@ -2,6 +2,7 @@ package com.f5.Airline.register;
 
 import com.f5.Airline.users.UserDto;
 import com.f5.Airline.validation.ValidationException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,11 @@ public class  RegisterController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Map<String,String>> register(@RequestBody UserDto newUser) {
-
+    public ResponseEntity<Map<String,String>> register(@Valid @RequestBody UserDto newUser) {
         Map<String, String> response = service.save(newUser);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(ValidationException ex) {
         Map<String, String> errorResponse = new HashMap<>();

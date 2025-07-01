@@ -1,10 +1,6 @@
 package com.f5.Airline.validation;
-
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

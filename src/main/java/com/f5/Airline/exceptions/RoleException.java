@@ -1,4 +1,4 @@
-package com.f5.Airline.roles.exceptions;
+package com.f5.Airline.exceptions;
 
 public class RoleException extends RuntimeException {
 

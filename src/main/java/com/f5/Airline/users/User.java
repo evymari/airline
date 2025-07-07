@@ -4,16 +4,16 @@ import com.f5.Airline.profiles.Profile;
 import com.f5.Airline.roles.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -39,7 +39,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-
+    public User() {
+    }
 
 
     // Constructor para registro o creación

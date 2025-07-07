@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -42,6 +44,7 @@ public class SecurityConfiguration {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
+                .httpBasic(httpBasic -> httpBasic.disable()) // ❌ Desactiva ventana emergente de basic auth
                 .logout(out -> out
                         .logoutUrl(endpoint + "/logout")
                         .invalidateHttpSession(true)
@@ -50,7 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(endpoint).permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
-                        //.requestMatchers(HttpMethod.POST, endpoint + "/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, endpoint + "/login").permitAll()
                         .requestMatchers(endpoint + "/login").hasAnyRole("USER", "ADMIN") // principio de mínimos
                         .requestMatchers(endpoint + "/admin/**").hasRole("ADMIN") // Protege rutas de admin
 
@@ -73,6 +76,10 @@ public class SecurityConfiguration {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

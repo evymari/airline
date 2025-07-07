@@ -1,37 +1,56 @@
 package com.f5.Airline.auth;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "${api-endpoint}")
+@RequestMapping(path = "${api-endpoint}/auth")
 public class AuthController {
 
-    @GetMapping(path = "/login")
-    public ResponseEntity<Map<String, String>> login() {
+    private final AuthenticationManager authManager;
 
-        SecurityContext contextHolder = SecurityContextHolder.getContext();
-        Authentication auth = contextHolder.getAuthentication();
+    public AuthController(AuthenticationManager authManager) {
+        this.authManager = authManager;
+    }
 
-        System.out.println("Usuario autenticado: " + auth.getName()); // 🔍 Debugging
-        System.out.println("Roles: " + auth.getAuthorities());
+    // 🔐 POST login: valida usuario con email y contraseña
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
+        // Autenticación
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(request.email(), request.password());
 
-        Map<String,String> json = new HashMap<>();
-        json.put("message", "Logged");
+        Authentication authentication = authManager.authenticate(authToken);
+
+        // Establece autenticación en contexto de seguridad
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Login successful");
+        response.put("username", authentication.getName());
+        response.put("roles", authentication.getAuthorities().toString());
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 🔎 GET login: solo devuelve info si ya estás autenticada
+    @GetMapping("/login")
+    public ResponseEntity<Map<String, String>> loginStatus() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Map<String, String> json = new HashMap<>();
+        json.put("message", "Already authenticated");
         json.put("username", auth.getName());
-        json.put("roles", auth.getAuthorities().iterator().next().toString());
+        json.put("roles", auth.getAuthorities().toString());
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(json);
     }
-
 }

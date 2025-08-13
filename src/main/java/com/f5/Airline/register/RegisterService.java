@@ -38,8 +38,8 @@ public class RegisterService {
             throw new ValidationException("The username is already in use.");
         }
 
-        String passwordDecoded = encryptFacade.decode("base64", userData.password());
-        String passwordEncoded = encryptFacade.encode("bcrypt", passwordDecoded);
+       // String passwordDecoded = encryptFacade.decode("base64", userData.password());
+        String passwordEncoded = encryptFacade.encode("bcrypt", userData.password());
 
         User newUser = new User(userData.username(), userData.email(), passwordEncoded);
         newUser.setRoles(roleService.assignDefaultRole());

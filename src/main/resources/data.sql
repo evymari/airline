@@ -10,8 +10,9 @@ INSERT INTO roles (id_role, name) VALUES (default, 'ROLE_USER');
 INSERT INTO roles (id_role, name) VALUES (default, 'ROLE_ADMIN');
 
 /* Users */
-INSERT INTO users (id_user, username, email, password) VALUES (default, 'pepe','pepe@gmail.com', '$2a$12$8LegtLQWe717tIPvZeivjuqKnaAs5.bm0Q05.5GrAmcKzXw2NjoUO');
-INSERT INTO users (id_user, username, email, password) VALUES (default, 'pepa','pepa@gmail.com', '$2a$12$8LegtLQWe717tIPvZeivjuqKnaAs5.bm0Q05.5GrAmcKzXw2NjoUO');
+INSERT INTO users (id_user, username, email, password) VALUES (default, 'pepe','pepe@gmail.com', '$2a$12$iuuIys4.zUil3bUYVLAqCO3Pg.vofB2pUUxBzs7nmHSuewxVYYk3.');
+INSERT INTO users (id_user, username, email, password) VALUES (default, 'pepa','pepa@gmail.com', '$2a$12$iuuIys4.zUil3bUYVLAqCO3Pg.vofB2pUUxBzs7nmHSuewxVYYk3.');
+//Password+1
 
 /* Profiles */
 INSERT INTO profiles (id_profile,email, address, user_id, country_id) VALUES (default,'pepe@mail.com', 'portal 1',1,2);

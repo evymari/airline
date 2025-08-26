@@ -1,17 +1,9 @@
 package com.f5.Airline.users;
-
+import java.util.Set;
 import com.f5.Airline.profiles.Profile;
 import com.f5.Airline.roles.Role;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import lombok.Data;
-
-
-
-import java.util.Set;
-
-@Data
 
 
 @Entity
@@ -23,13 +15,18 @@ public class User {
     @Column(name = "id_user")
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
-    private String photoUrl;
-    private String email;
+
+    @Column(nullable = false, unique = true)
+    private String email;  // 👈 agregado
+
+    @Column(nullable = false)
     private String password;
 
+    private String photoUrl; // 👈 agregado
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
     private Profile profile;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -39,25 +36,25 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+
     public User() {
     }
 
-
-    // Constructor para registro o creación
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
+    // ✅ Constructores opcionales
+    public User(String username, String email, String password, Profile profile) {
         this.username = username;
+        this.email = email;
+        this.password = password;
+        this.profile = profile;
     }
 
+    // 🔹 Getters y Setters
     public Long getId() {
         return id;
     }
@@ -66,12 +63,12 @@ public class User {
         this.id = id;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -106,12 +103,11 @@ public class User {
         this.roles = roles;
     }
 
-    // Constructor extendido (por si lo usas con perfil y foto)
-    public User(String username, String email, String password, Profile profile, String photoUrl) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.profile = profile;
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
 }

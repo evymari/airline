@@ -15,8 +15,11 @@ INSERT INTO users (id_user, username, email, password) VALUES (default, 'pepa','
 //Password+1
 
 /* Profiles */
-INSERT INTO profiles (id_profile,email, address, user_id, country_id) VALUES (default,'pepe@mail.com', 'portal 1',1,2);
-INSERT INTO profiles (id_profile,email, address, user_id, country_id) VALUES (default,'pepa@mail.com', 'portal 1',2,3);
+INSERT INTO profiles (id_profile, email, address, phone, first_name, last_name, user_id, country_id)
+VALUES (default,'pepe@mail.com', 'portal 1','1234567', 'Pepe', 'García', 1, 2);
+
+INSERT INTO profiles (id_profile, email, address, phone, first_name, last_name, user_id, country_id)
+VALUES (default,'pepa@mail.com', 'portal 1','1234567', 'Pepa', 'López', 2, 3);
 
 /* Roles Users */
 INSERT INTO roles_users (role_id, user_id) VALUES (1, 1);

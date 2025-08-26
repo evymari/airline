@@ -19,4 +19,25 @@ public record UserDto( @NotBlank(message = "El nombre de usuario es obligatorio"
                        String password,
 
                        String photoUrl
-) {}
+) {
+
+    @Override
+    public @NotBlank(message = "El nombre de usuario es obligatorio") String username() {
+        return username;
+    }
+
+    @Override
+    public @NotBlank(message = "El email es obligatorio") String email() {
+        return email;
+    }
+
+    @Override
+    public @NotBlank(message = "La contraseña es obligatoria") @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres") String password() {
+        return password;
+    }
+
+    @Override
+    public String photoUrl() {
+        return photoUrl;
+    }
+}

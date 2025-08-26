@@ -1,18 +1,15 @@
 package com.f5.Airline.register;
 
-import com.f5.Airline.users.UserDto;
-import com.f5.Airline.validation.ValidationException;
+import com.f5.Airline.register.dto.RegisterRequestDTO;
+import com.f5.Airline.register.dto.RegisterResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping(path = "${api-endpoint}/register")
-public class  RegisterController {
+public class RegisterController {
 
     private final RegisterService service;
 
@@ -21,16 +18,8 @@ public class  RegisterController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Map<String,String>> register(@Valid @RequestBody UserDto newUser) {
-        Map<String, String> response = service.save(newUser);
+    public ResponseEntity<RegisterResponseDTO> register(@Valid @RequestBody RegisterRequestDTO newUser) {
+        RegisterResponseDTO response = service.save(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<Map<String, String>> handleValidationException(ValidationException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-    }
-
 }

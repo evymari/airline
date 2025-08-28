@@ -31,13 +31,15 @@ public class Profile {
     @Column(name = "photo_url")
     private String photoUrl;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_id")
     private Country country;
+
+
 
     // Getters y setters
     public Long getId() { return id; }

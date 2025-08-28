@@ -1,64 +1,20 @@
 package com.f5.Airline.profiles.dto;
 
-import com.f5.Airline.profiles.dto.ProfileResponseDTO;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
 
-@Getter
-@Setter
-public class ProfileUpdateDTO {
-    private String firstName;
-    private String lastName;
-    private String phone;
-    private String address;
-    private String country;
-    private String photoUrl;
+public record ProfileUpdateDTO(
 
-    public String getFirstName() {
-        return firstName;
-    }
+        @Size(max = 20, message = "El teléfono no puede tener más de 20 caracteres")
+        String phone,
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+        @Size(max = 255, message = "La dirección no puede tener más de 255 caracteres")
+        String address,
 
-    public String getLastName() {
-        return lastName;
-    }
+        @Size(max = 500, message = "La URL de la foto no puede tener más de 500 caracteres")
+        String photoUrl,
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+        // Nuevo campo para país (opcional)
+        Long countryId
+) {
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
 }

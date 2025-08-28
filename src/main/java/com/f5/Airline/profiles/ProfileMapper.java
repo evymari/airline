@@ -1,28 +1,19 @@
-package com.f5.Airline.profiles.dto;
+package com.f5.Airline.profiles;
 
-import com.f5.Airline.profiles.Profile;
-import org.springframework.stereotype.Component;
+import com.f5.Airline.profiles.dto.ProfileResponseDTO;
 
-@Component
 public class ProfileMapper {
 
-    // Convierte Entity -> ResponseDTO
-    public ProfileResponseDTO toResponseDTO(Profile profile) {
+    public static ProfileResponseDTO toDTO(Profile profile) {
         return new ProfileResponseDTO(
                 profile.getId(),
-                profile.getFirstName(),
-                profile.getLastName(),
+                profile.getUser().getUsername(),
+                profile.getUser().getEmail(),
                 profile.getPhone(),
-                profile.getUser().getId()
+                profile.getAddress(),
+                profile.getPhotoUrl(),
+                profile.getCountry() != null ? profile.getCountry().getId() : null,   // countryId
+                profile.getCountry() != null ? profile.getCountry().getName() : null // countryName
         );
-    }
-
-    // Convierte RequestDTO -> Entity
-    public Profile toEntity(ProfileRequestDTO dto) {
-        Profile profile = new Profile();
-        profile.setFirstName(dto.getFirstName());
-        profile.setLastName(dto.getLastName());
-        profile.setPhone(dto.getPhone());
-        return profile;
     }
 }

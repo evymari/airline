@@ -1,12 +1,14 @@
 package com.f5.Airline.profiles;
 
+import com.f5.Airline.countries.Country;
+import com.f5.Airline.countries.CountryRepository;
 import com.f5.Airline.exceptions.ProfileNotFoundException;
-import com.f5.Airline.profiles.dto.ProfileMapper;
-import com.f5.Airline.profiles.dto.ProfileRequestDTO;
 import com.f5.Airline.profiles.dto.ProfileResponseDTO;
+import com.f5.Airline.profiles.dto.ProfileUpdateDTO;
 import com.f5.Airline.users.User;
 import com.f5.Airline.users.UserRepository;
-import com.f5.Airline.validation.ValidationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,54 +16,49 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
-    private final ProfileMapper profileMapper;
+    private final CountryRepository countryRepository;
 
-    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, ProfileMapper profileMapper) {
+    public ProfileService(ProfileRepository profileRepository,
+                          UserRepository userRepository,
+                          CountryRepository countryRepository) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
-        this.profileMapper = profileMapper;
+        this.countryRepository = countryRepository;
     }
 
-
-    public ProfileResponseDTO createOrUpdateProfile(Long userId, ProfileRequestDTO dto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ValidationException("Usuario no encontrado con ID: " + userId));
-
-        Profile profile = profileRepository.findByUserId(userId)
-                .orElse(new Profile());
-
-        profile.setFirstName(dto.getFirstName());
-        profile.setLastName(dto.getLastName());
-        profile.setPhone(dto.getPhone());
-        profile.setUser(user);
-
-        Profile saved = profileRepository.save(profile);
-
-        return new ProfileResponseDTO(
-                saved.getId(),
-                saved.getFirstName(),
-                saved.getLastName(),
-                saved.getPhone(),
-                saved.getUser().getId()
-        );
+    public ProfileResponseDTO getMyProfile() {
+        User currentUser = getCurrentUser();
+        Profile profile = profileRepository.findByUser(currentUser)
+                .orElseThrow(() -> new ProfileNotFoundException("Perfil no encontrado"));
+        return ProfileMapper.toDTO(profile);
     }
 
-    public ProfileResponseDTO getProfile(Long userId) {
-        Profile profile = profileRepository.findByUserId(userId)
-                .orElseThrow(() -> new ValidationException("No existe perfil para el usuario con ID: " + userId));
+    public ProfileResponseDTO updateMyProfile(ProfileUpdateDTO dto) {
+        User currentUser = getCurrentUser();
+        Profile profile = profileRepository.findByUser(currentUser)
+                .orElseThrow(() -> new ProfileNotFoundException("Perfil no encontrado"));
 
-        return new ProfileResponseDTO(
-                profile.getId(),
-                profile.getFirstName(),
-                profile.getLastName(),
-                profile.getPhone(),
-                profile.getUser().getId()
-        );
-    }
-    public ProfileResponseDTO getProfileByEmail(String email) {
-        return profileRepository.findByEmail(email)
-                .map(profileMapper::toResponseDTO)
-                .orElseThrow(() -> new ProfileNotFoundException("No existe perfil con email: " + email));
+        // Campos básicos
+        profile.setPhone(dto.phone());
+        profile.setAddress(dto.address());
+        profile.setPhotoUrl(dto.photoUrl());
+
+        // Manejo de country: si viene null, lo dejamos null
+        if (dto.countryId() != null) {
+            Country country = countryRepository.findById(dto.countryId())
+                    .orElseThrow(() -> new RuntimeException("Country not found"));
+            profile.setCountry(country);
+        } else {
+            profile.setCountry(null); // ✅ si no selecciona, queda null
+        }
+
+        profileRepository.save(profile);
+        return ProfileMapper.toDTO(profile);
     }
 
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
 }
